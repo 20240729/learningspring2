@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -35,9 +36,19 @@ public class MemoController {
         MemoResponseDto memoResponseDto = new MemoResponseDto(memo);
 
         return memoResponseDto;
-
-
     }
+
+    @GetMapping("/memos")
+    public List<MemoResponseDto> getMemos(){
+        // Map to List
+        List<MemoResponseDto> responseList = memoList.values().stream()
+                .map(MemoResponseDto::new).toList();
+
+        return responseList;
+    }
+
+
+
 
 
 
