@@ -38,6 +38,7 @@ public class MemoController {
         return memoResponseDto;
     }
 
+    // 조회하기
     @GetMapping("/memos")
     public List<MemoResponseDto> getMemos(){
         // Map to List
