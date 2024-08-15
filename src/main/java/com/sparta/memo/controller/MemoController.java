@@ -17,7 +17,7 @@ public class MemoController {
     private final Map<Long, Memo> memoList = new HashMap<>();
 
     @PostMapping("memos")
-    public MemoResponseDto createMemo(@RequestBody MemoRequestDto requestDto){
+    public MemoResponseDto createMemo(@RequestBody MemoRequestDto requestDto) {
         // RequestDto -> Entity (데이터는 데이터베이스와 소통하는 엔티티에 들어간다.)
         Memo memo = new Memo(requestDto);
 
@@ -40,7 +40,7 @@ public class MemoController {
 
     // 조회하기
     @GetMapping("/memos")
-    public List<MemoResponseDto> getMemos(){
+    public List<MemoResponseDto> getMemos() {
         // Map to List
         List<MemoResponseDto> responseList = memoList.values().stream()
                 .map(MemoResponseDto::new).toList();
@@ -48,11 +48,31 @@ public class MemoController {
         return responseList;
     }
 
+    @PutMapping("/memos/{id}")
+    public Long updateMemo(@RequestBody MemoRequestDto requestDto, @PathVariable Long id) {
+        // 해당 메모가 db에 존재하는지 확인
+        if (memoList.containsKey(id)) {
+            //해당 메모 가져오기
+            Memo memo = memoList.get(id);
 
+            // 수정
+            memo.update(requestDto);
+            return memo.getId();
+        } else {
+            throw new IllegalArgumentException("매모가 존재하지 않습니다.");
+        }
+    }
 
-
-
-
+    @DeleteMapping("memos/{id}")
+    public Long deleteMemo(@PathVariable Long id) {
+        // 존재 확인
+        if (memoList.containsKey(id)) {
+            memoList.remove(id);
+            return id;
+        } else {
+            throw new IllegalArgumentException("매모가 존재하지 않습니다.");
+        }
+    }
 
 
 }
